@@ -43,7 +43,7 @@ sendButton.addEventListener('click', () => {
     method: "POST", // Change to "GET" if your API requires a GET request
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${API_KEY}` // Adjust if your API uses a different auth header
+      "Authorization": `Bearer ${ AIzaSyBxlrezm5hW2qL1yNR2IniC_RRbA12FIGg}` // Adjust if your API uses a different auth header
     },
     body: JSON.stringify(payload)
   })
