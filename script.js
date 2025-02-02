@@ -2,8 +2,8 @@
 
 // OpenAI API endpoint and API key
 const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-// Replace the sample key below with your actual OpenAI API key (it should start with "sk-")
-const API_KEY = "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"; // <-- Paste your API key here
+// Replace with your full API key (should start with "sk-")
+const API_KEY = "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";
 
 // DOM element references
 const sendButton = document.getElementById('sendButton');
@@ -14,22 +14,20 @@ const responseContainer = document.getElementById('responseContainer');
 sendButton.addEventListener('click', () => {
   const userInput = inputText.value.trim();
 
-  // Validate that the text area is not empty
   if (!userInput) {
     responseContainer.textContent = "Please enter some text.";
     return;
   }
 
-  // Inform the user that the request is being processed
   responseContainer.textContent = "Processing...";
 
-  // Prepare the payload for the OpenAI API using GPT‑4o‑mini
+  // Prepare the payload using your custom assistant "lie to me"
   const payload = {
-    model: "gpt-4o-mini", // or "gpt-3.5-turbo" if needed
+    model: "lie to me", // Use the model name as set in your dashboard
     messages: [
       {
         role: "system",
-        content: "You are a deception detection assistant. Based on scientific principles and using advanced AI, your task is to analyze a given message for signs of deception. You will identify where in the message deception is suspected, explain why, and provide a percentage likelihood of deception. In addition, you suggest follow-up questions to ask to further clarify the message and improve accuracy. Your analysis should help the user determine the truth and teach them how to recognize deception."
+        content: "You are a deception detection assistant based on scientific principles and advanced AI. Your task is to analyze a given message for signs of deception. Identify where in the message deception is suspected, explain why, and provide a percentage likelihood of deception. Additionally, suggest follow-up questions to further clarify the message and improve accuracy. Your analysis should help the user determine the truth and teach them how to recognize deception."
       },
       {
         role: "user",
@@ -40,7 +38,6 @@ sendButton.addEventListener('click', () => {
     max_tokens: 300
   };
 
-  // Make the API call using fetch
   fetch(API_ENDPOINT, {
     method: "POST",
     headers: {
@@ -56,7 +53,6 @@ sendButton.addEventListener('click', () => {
       return response.json();
     })
     .then(data => {
-      // Check if the API returned a valid answer
       if (data.choices && data.choices.length > 0) {
         responseContainer.textContent = data.choices[0].message.content;
       } else {
