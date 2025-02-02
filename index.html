@@ -3,19 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Intellichatt</title>
+  <title>Intellichatt - Beta</title>
+  <!-- Google Fonts for modern typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
+  <header>
     <h1>Intellichatt</h1>
-    <!-- Text area for user input -->
-    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
-    <!-- Send button -->
-    <button id="sendButton">Send</button>
-    <!-- Container for displaying the API response -->
-    <div id="responseContainer"></div>
-  </div>
+    <p class="tagline">Beta Testing | Powered by Scientific Principles</p>
+  </header>
+  <main>
+    <section class="app-container">
+      <textarea id="inputText" placeholder="Enter your statement..."></textarea>
+      <button id="sendButton">Send</button>
+      <div id="responseContainer" class="response"></div>
+    </section>
+    <section class="info">
+      <p>
+        Welcome to Intellichatt, currently in beta! Our cutting‐edge tool uses scientific principles and advanced AI analysis to assess your statements. Join us on this journey and help shape the future of communication analysis.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Intellichatt Beta. All rights reserved.</p>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
