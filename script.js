@@ -21,13 +21,16 @@ sendButton.addEventListener('click', () => {
 
   responseContainer.textContent = "Processing...";
 
-  // Prepare the payload using your custom assistant "lie to me"
+  // Prepare the payload for your custom assistant
   const payload = {
-    model: "lie to me", // Use the model name as set in your dashboard
+    // Use your custom assistant's unique identifier
+    model: "asst_YMxp7qpWghfjFFyV6hofZpmv",
     messages: [
+      // The system instructions you see in the dashboard will be used by your assistant.
+      // You can optionally include additional context here.
       {
         role: "system",
-        content: "You are a deception detection assistant based on scientific principles and advanced AI. Your task is to analyze a given message for signs of deception. Identify where in the message deception is suspected, explain why, and provide a percentage likelihood of deception. Additionally, suggest follow-up questions to further clarify the message and improve accuracy. Your analysis should help the user determine the truth and teach them how to recognize deception."
+        content: "Forensic AI Deception Analyzer. Your role is to analyze messages for deception using forensic linguistics, cognitive load analysis, and behavioral cues. Provide a detailed analysis including deception markers, a deception score (0-100%), and suggested follow-up questions."
       },
       {
         role: "user",
@@ -38,6 +41,7 @@ sendButton.addEventListener('click', () => {
     max_tokens: 300
   };
 
+  // Make the API call using fetch
   fetch(API_ENDPOINT, {
     method: "POST",
     headers: {
