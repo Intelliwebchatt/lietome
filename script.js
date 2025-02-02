@@ -1,18 +1,9 @@
-/* 
-  script.js
+// script.js
 
-  This script handles the button click, makes an API call to the custom AI service,
-  and displays the response on the webpage.
-*/
-
-/* 
-  Replace the following placeholders with your actual API endpoint URL and API key.
-  For example:
-    const API_ENDPOINT = "https://api.yourservice.com/analyze";
-    const API_KEY = "YOUR_ACTUAL_API_KEY";
-*/
-const API_ENDPOINT = "https://api.example.com/your-endpoint"; // Replace with your API endpoint URL
-const API_KEY = "YOUR_API_KEY_HERE"; // Replace with your API key
+// OpenAI API endpoint and API key
+const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+// Replace the sample key below with your actual OpenAI API key
+const API_KEY = "sk-proj-vcDuhC514r0eOPSjSBWRT3BlbkFJsimE6GcLUitN40mOyNWJ";
 
 // DOM element references
 const sendButton = document.getElementById('sendButton');
@@ -21,10 +12,10 @@ const responseContainer = document.getElementById('responseContainer');
 
 // Event listener for the "Send" button
 sendButton.addEventListener('click', () => {
-  const text = inputText.value.trim();
+  const userInput = inputText.value.trim();
 
   // Validate that the text area is not empty
-  if (!text) {
+  if (!userInput) {
     responseContainer.textContent = "Please enter some text.";
     return;
   }
@@ -32,32 +23,42 @@ sendButton.addEventListener('click', () => {
   // Inform the user that the request is being processed
   responseContainer.textContent = "Processing...";
 
-  // Prepare the data payload for the API request
+  // Prepare the payload for the OpenAI API
   const payload = {
-    text: text
-    // Add any additional parameters required by your API here
+    model: "gpt-3.5-turbo", // or use "gpt-4" if you have access and prefer it
+    messages: [
+      {
+        role: "system",
+        content: "You are a deception detection assistant. Analyze the following statement using these guidelines: [INSERT YOUR SPECIAL INSTRUCTIONS HERE]. Also, consider this knowledge base: [INSERT SUMMARY OR DETAILS FROM UPLOADED DOCUMENTS]. Provide a deception likelihood percentage and explain your reasoning."
+      },
+      {
+        role: "user",
+        content: userInput
+      }
+    ],
+    temperature: 0.7,
+    max_tokens: 300
   };
 
   // Make the API call using fetch
   fetch(API_ENDPOINT, {
-    method: "POST", // Change to "GET" if your API requires a GET request
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${ AIzaSyBxlrezm5hW2qL1yNR2IniC_RRbA12FIGg}` // Adjust if your API uses a different auth header
+      "Authorization": `Bearer ${API_KEY}`
     },
     body: JSON.stringify(payload)
   })
     .then(response => {
-      // Check if the response is successful
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
       return response.json();
     })
     .then(data => {
-      // Assuming the API returns a JSON object with an "answer" field
-      if (data.answer) {
-        responseContainer.textContent = data.answer;
+      // Check if the API returned a valid answer
+      if (data.choices && data.choices.length > 0) {
+        responseContainer.textContent = data.choices[0].message.content;
       } else {
         responseContainer.textContent = "No answer received from the API.";
       }
@@ -67,3 +68,4 @@ sendButton.addEventListener('click', () => {
       responseContainer.textContent = "An error occurred while processing your request.";
     });
 });
+
