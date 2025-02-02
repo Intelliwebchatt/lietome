@@ -3,7 +3,7 @@
 // OpenAI API endpoint and API key
 const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 // Replace the sample key below with your actual OpenAI API key (it should start with "sk-")
-const API_KEY = " sk-proj-vcDuhC514r0eOPSjSBWRT3BlbkFJsimE6GcLUitN40mOyNWJ"; // <-- Paste your API key here
+const API_KEY = " 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"; // <-- Paste your API key here
 
 // DOM element references
 const sendButton = document.getElementById('sendButton');
