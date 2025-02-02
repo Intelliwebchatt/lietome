@@ -2,15 +2,15 @@
 
 // OpenAI API endpoint and API key
 const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-// Replace the sample key below with your actual OpenAI API key
-const API_KEY = "sk-proj-vcDuhC514r0eOPSjSBWRT3BlbkFJsimE6GcLUitN40mOyNWJ";
+// Replace the sample key below with your actual OpenAI API key (it should start with "sk-")
+const API_KEY = "sk-XXXXXXXXXXXXXXXXXXXX"; // <-- Paste your API key here
 
 // DOM element references
 const sendButton = document.getElementById('sendButton');
 const inputText = document.getElementById('inputText');
 const responseContainer = document.getElementById('responseContainer');
 
-// Event listener for the "Send" button
+// Event listener for the "Analyze" button
 sendButton.addEventListener('click', () => {
   const userInput = inputText.value.trim();
 
@@ -23,13 +23,13 @@ sendButton.addEventListener('click', () => {
   // Inform the user that the request is being processed
   responseContainer.textContent = "Processing...";
 
-  // Prepare the payload for the OpenAI API
+  // Prepare the payload for the OpenAI API using GPT‑4o‑mini
   const payload = {
-    model: "gpt-3.5-turbo", // or use "gpt-4" if you have access and prefer it
+    model: "gpt-4o-mini", // or "gpt-3.5-turbo" if needed
     messages: [
       {
         role: "system",
-        content: "You are a deception detection assistant. Analyze the following statement using these guidelines: [INSERT YOUR SPECIAL INSTRUCTIONS HERE]. Also, consider this knowledge base: [INSERT SUMMARY OR DETAILS FROM UPLOADED DOCUMENTS]. Provide a deception likelihood percentage and explain your reasoning."
+        content: "You are a deception detection assistant. Based on scientific principles and using advanced AI, your task is to analyze a given message for signs of deception. You will identify where in the message deception is suspected, explain why, and provide a percentage likelihood of deception. In addition, you suggest follow-up questions to ask to further clarify the message and improve accuracy. Your analysis should help the user determine the truth and teach them how to recognize deception."
       },
       {
         role: "user",
@@ -45,13 +45,13 @@ sendButton.addEventListener('click', () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": Bearer ${API_KEY}
+      "Authorization": `Bearer ${API_KEY}`
     },
     body: JSON.stringify(payload)
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error(Error: ${response.status} ${response.statusText});
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
       return response.json();
     })
@@ -67,4 +67,4 @@ sendButton.addEventListener('click', () => {
       console.error("API call failed:", error);
       responseContainer.textContent = "An error occurred while processing your request.";
     });
-});            
+});
