@@ -1,102 +1,70 @@
-/* Basic reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+// script.js
 
-/* Apply modern fonts */
-body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #2b5876, #4e4376);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
+// OpenAI API endpoint and API key
+const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+// Replace the sample key below with your actual OpenAI API key
+const API_KEY = "open ai key";
 
-/* Header styling */
-header {
-  text-align: center;
-  padding: 2rem 1rem;
-}
+// DOM element references
+const sendButton = document.getElementById('sendButton');
+const inputText = document.getElementById('inputText');
+const responseContainer = document.getElementById('responseContainer');
 
-header h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
+// Event listener for the "Send" button
+sendButton.addEventListener('click', () => {
+  const userInput = inputText.value.trim();
 
-.tagline {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
+  // Validate that the text area is not empty
+  if (!userInput) {
+    responseContainer.textContent = "Please enter some text.";
+    return;
+  }
 
-/* Main container styling */
-main {
-  width: 90%;
-  max-width: 600px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
-}
+  // Inform the user that the request is being processed
+  responseContainer.textContent = "Processing...";
 
-/* App container styling */
-.app-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
+  // Prepare the payload for the OpenAI API
+  const payload = {
+    model: "gpt-3.5-turbo", // or use "gpt-4" if you have access and prefer it
+    messages: [
+      {
+        role: "system",
+        content: "You are a deception detection assistant. Analyze the following statement using these guidelines: [INSERT YOUR SPECIAL INSTRUCTIONS HERE]. Also, consider this knowledge base: [INSERT SUMMARY OR DETAILS FROM UPLOADED DOCUMENTS]. Provide a deception likelihood percentage and explain your reasoning."
+      },
+      {
+        role: "user",
+        content: userInput
+      }
+    ],
+    temperature: 0.7,
+    max_tokens: 300
+  };
 
-textarea {
-  width: 100%;
-  height: 120px;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  resize: vertical;
-  outline: none;
-}
-
-button {
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #ff6f61;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #ff8a80;
-}
-
-.response {
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
-  min-height: 60px;
-}
-
-/* Information section styling */
-.info {
-  text-align: center;
-  margin: 1.5rem 0;
-  font-size: 1rem;
-}
-
-/* Footer styling */
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.8rem;
-  opacity: 0.8;
-}
-
+  // Make the API call using fetch
+  fetch(API_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": Bearer ${API_KEY}
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(Error: ${response.status} ${response.statusText});
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Check if the API returned a valid answer
+      if (data.choices && data.choices.length > 0) {
+        responseContainer.textContent = data.choices[0].message.content;
+      } else {
+        responseContainer.textContent = "No answer received from the API.";
+      }
+    })
+    .catch(error => {
+      console.error("API call failed:", error);
+      responseContainer.textContent = "An error occurred while processing your request.";
+    });
+});            
